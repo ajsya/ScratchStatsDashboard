@@ -32,7 +32,7 @@ def data():
         current_time = datetime.now(tz)
         today = date.today()
 
-        time = "{0} @ {1}".format(current_time.strftime("%H:%M"), today.strftime("%m/%d/%y"))
+        time = "{0} @ {1}".format(today.strftime("%m/%d/%y"), current_time.strftime("%H:%M"))
 
         return views, loves, favs, followers, rank_country, rank_global, messages, time
 
