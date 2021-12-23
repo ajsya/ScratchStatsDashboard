@@ -1,0 +1,4 @@
+python-dotenv==0.19.2
+pytz==2021.1
+requests==2.21.0
+scratchconnect==2.3
