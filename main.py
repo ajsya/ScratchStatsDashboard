@@ -14,8 +14,8 @@ username = os.environ['USERNAME']
 password = os.environ['PASSWORD']
 
 login = scratchconnect.ScratchConnect(username, password)
-user = login.connect_user(username="ajsya")
-project = login.connect_project(619760935) # Connect the project
+user = login.connect_user(username=your_username)
+project = login.connect_project(project_id) # Connect the project
 
 def data():
         user.update_data()
