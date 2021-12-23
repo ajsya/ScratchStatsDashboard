@@ -26,6 +26,7 @@ $ git clone https://github.com/ajsya/ScratchStatsDashboard.git
 ```
 
 Install the requirements:
+
 **Mac/Linux**
 ```bash
 $ python3 -m pip install -r requirements.txt
