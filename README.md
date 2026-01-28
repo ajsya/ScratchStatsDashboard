@@ -1,13 +1,11 @@
 # ScratchStatsDashboard
-Python Server code for Scratch project to show your Scratch Stats automatically without having to manually update it all the time.
+Python Server code for Scratch project to show your Scratch Stats automatically without having to manually update it all the time. **Updates both the Turbowarp and Scratch Cloud**
 
-## Requirements
-- scratchconnect
-- requests
-- python-dotenv
+## Dependencies
+See requirements.txt
 
 ```bash
-$ pip install -r requirments.txt
+$ pip install -r requirements.txt
 ```
 
 ## How to setup / remix guide
@@ -36,8 +34,17 @@ $ python3 -m pip install -r requirements.txt
 $ pip install -r requirements.txt
 ```
 
-Open _.env_. Edit the two variables in the file. These are your bot account's username and password. The account you provide does not have to have Scratcher status, however, do not use your main account since ever time the program is ran you will be logged out.
+## Configure
 
-Open _main.py_. Edit the two settings at the top of the program. These should be the username of the Scratch acount you want the program to get the stats for and update the project with, and the id of your project that you want the cloud variables updated in (the one you just created earlier).
+Open _.env_. Edit the four variables in the file.
 
-Save the file and run it. You should be done! Let me know if you have any errors or problems setting it up. Please run this program at your own risk.
+# 1. USERNAME
+Username for a Scratch account that will act as a bot to automatically update the cloud variables. The account you provide does not have to have Scratcher status, however, do not use your main account. You will be logged out very time the program runs.
+# 2. PASSWORD
+Password of the bot account
+# 3. PROJECT_ID
+ID of your Scratch Project that you remixed that the program will be updating the cloud variables of.
+# 4. CONTACT_INFO
+Some sort of contact info for the Turbowarp devs.
+
+Save the file and run it. You should be done! Let me know if you have any errors or problems setting it up. Please run this program at your own risk and be considerate of the scratch servers.
