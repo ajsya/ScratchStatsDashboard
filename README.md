@@ -38,13 +38,13 @@ $ pip install -r requirements.txt
 
 Open _.env_. Edit the four variables in the file.
 
-# 1. USERNAME
+### 1. USERNAME
 Username for a Scratch account that will act as a bot to automatically update the cloud variables. The account you provide does not have to have Scratcher status, however, do not use your main account. You will be logged out very time the program runs.
-# 2. PASSWORD
+### 2. PASSWORD
 Password of the bot account
-# 3. PROJECT_ID
+### 3. PROJECT_ID
 ID of your Scratch Project that you remixed that the program will be updating the cloud variables of.
-# 4. CONTACT_INFO
+### 4. CONTACT_INFO
 Some sort of contact info for the Turbowarp devs.
 
 Save the file and run it. You should be done! Let me know if you have any errors or problems setting it up. Please run this program at your own risk and be considerate of the scratch servers.
