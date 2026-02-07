@@ -42,12 +42,16 @@ contact_info = os.environ['CONTACT_INFO'] # to be included with TurboWarp cloud 
 
 # scratch cloud login
 session = sa.login(username, password)
-cloud = session.connect_scratch_cloud(project_id)
+# cloud = session.connect_scratch_cloud(project_id)
+# client = cloud.requests()
 
 # turbowarp cloud login
-cloud_tw = sa.get_tw_cloud(project_id, purpose="Updates cloud variable to display accurate user stats in the project", contact=contact_info)
+cloud_tw = sa.get_tw_cloud(1276436782, purpose="Updates cloud variable to display accurate user stats in the project", contact=contact_info)
+client = cloud_tw.requests()
 
 user = sa.get_user("ajsya")
+
+time_since_last_fetch = 0
 
 def fetch_data():
     print("Fetching data...")
@@ -70,38 +74,44 @@ def fetch_data():
     current_time = datetime.now(tz)
     today = date.today()
 
-    time = "{0} @ {1}".format(today.strftime("%m/%d/%y"), current_time.strftime("%H:%M"))
+    now_time = "{0} @ {1}".format(today.strftime("%m/%d/%y"), current_time.strftime("%H:%M"))
 
     print("DONE!")
-    return totalViews, totalLoves, totalFavorites, followers, messageCount, time
+    global time_since_last_fetch
+    time_since_last_fetch = time.time()
 
-def send_data(to_send):
-    print("Sending data to cloud...")
-    try:
-        cloud.set_var("Cloud", to_send)
-        print("Data sent to Scratch cloud.")
-    except Exception as e:
-        print(f"Error occurred while sending to scratch cloud servers: {e}. Trying TurboWarp cloud...")
-    # Try TurboWarp cloud
-    try:
-        cloud_tw.set_var("Cloud", to_send)
-        print("Data sent to TurboWarp cloud.")
-    except Exception as e:
-        print(f"Error occurred while sending to TurboWarp cloud servers: {e}.")
-    
-    return
+    global previous_fetch
+    previous_fetch = (totalViews, totalLoves, totalFavorites, followers, messageCount, now_time)
+    return totalViews, totalLoves, totalFavorites, followers, messageCount, now_time
 
-def main():
-    while True:
-        data = fetch_data()
-        print(data)
-        encoded = encode_list(list(data))  # Encode a list
-        print(encoded)
+@client.request
+def ping(): #called when client receives request
+    print("Ping request received")
+    return "pong" #sends back 'pong' to the Scratch project
 
-        send_data(encoded)
+@client.request
+def get_data(): #called when client receives request
+    print("Data request received")
 
-        sleepTime = 3600*2  # 2 hour delay between updates, can be changed based on user's popularity.
-        print(f"Updating again in {sleepTime/3600} hours...")
-        time.sleep(sleepTime)  # 3 hour delay between updates, can be changed based on user's popularity.
+    time_now = time.time()
+    if time_now - time_since_last_fetch > 2400: # if it's been more than 20 minutes since the last data fetch, fetch new data
+        print("Data is outdated, fetching new data...")
+        try:
+            data = fetch_data()
+            print(data)
+            encoded = encode_list(list(data))  # Encode a list
+            print(encoded)
 
-main()
+            return encoded
+        except Exception as e:
+            print(f"Error occurred while fetching data: {e}. Sending current data...")
+            return encode_list(list(previous_fetch))
+    else:
+        print("Data is up to date, sending current data...")
+        return encode_list(list(previous_fetch))
+
+@client.event
+def on_ready():
+    print("Request handler is running")
+
+client.start(thread=True) # thread=True is an optional argument. It makes the cloud requests handler run in a thread
